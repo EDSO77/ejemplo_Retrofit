@@ -1,11 +1,15 @@
 package com.example.ejemplo_retrofit_corutinas
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ejemplo_retrofit_corutinas.api_pokemon.PokemonMainActivity
 import com.example.ejemplo_retrofit_corutinas.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +50,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             //retrofit.crea,(una instancia de APPiservice), esta instancia llama a su propio metodo
             // y el metodo pasa como arguneto la solicitud buscada + el resto de direccion necesario
             // por lo tanto el call es un "Response<DogResponse>" que es lo que devuelve la interface
-            val call = getRetrofit().create(APIService::class.java).getDogsByBreeds("$querty/images")
+            val call = getRetrofit().create(DogAPIService::class.java).getDogsByBreeds("$querty/images")
             val puppies = call.body() // en el body, es donde se encuentran alojados los datos de la respuesta
             // runOnUiThread, nos regresa a la ejecucion sobre el hilo principal
             runOnUiThread {
@@ -90,6 +94,17 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         return true
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_activity,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intentPokemon = Intent(this,PokemonMainActivity::class.java)
+        startActivity(intentPokemon)
+        return super.onOptionsItemSelected(item)
+    }
+
 }
 
 /*
@@ -102,7 +117,7 @@ dependencias correspondientes
 (data class) por ende fue lo segundo que se hizo crear el DogResponse
 
 3)Lo siguiente fue crear una interface, llamada APIService (Practicamente sera igual para cada llamada @GET
-solo se asgina nombre a la funcion u se asigna el modelo de datos como tipo, para el Response)
+solo se asgina nombre a la funcion y se asigna el modelo de datos como tipo, para el Response)
 
 4)Se crea una instancia del objeto Retrofit, dentro de la funcion "getRetrofit" este va a contener la URL base, el conversor de gson
 a nuestro modelo de datos, y toda la configuracion para hacer las llamadas a internet

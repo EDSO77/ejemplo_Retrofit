@@ -4,7 +4,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Url
 
-interface APIService {
+interface DogAPIService {
     //se indica el tipo de llamada: @GET,
     @GET
     suspend fun getDogsByBreeds(@Url url:String):Response<DogResponse>
