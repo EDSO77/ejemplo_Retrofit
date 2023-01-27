@@ -20,7 +20,7 @@ class PokemonMainActivity : AppCompatActivity() {
     var pokemones = mutableListOf<Pokemon>()
     var nextPage = ""
     var previousPage = ""
-    var counter = 1
+    var pagina = 1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,19 +28,20 @@ class PokemonMainActivity : AppCompatActivity() {
         setContentView(binding.root)
         initReciclerView()
         quertyPokemon()
+        upToDateCurrentPage()
 
 
         binding.btNext.setOnClickListener {
             quertyPokemon(nextPage)
-            counter++
-            binding.tvPagina.text = "Pagina $counter"
+            pagina++
+            upToDateCurrentPage()
         }
 
         binding.btPrevious.setOnClickListener {
-            if (previousPage!="") {
+            if (pagina>1) {
                 quertyPokemon(previousPage)
-                counter--
-                binding.tvPagina.text = "Pagina $counter"
+                pagina--
+                upToDateCurrentPage()
             }else{
                 Toast.makeText(this@PokemonMainActivity, "Has llegado a la primer pagina", Toast.LENGTH_SHORT).show()
             }
@@ -49,10 +50,15 @@ class PokemonMainActivity : AppCompatActivity() {
 
     }
 
+    private fun upToDateCurrentPage() {
+        binding.tvPagina.text = "Pagina $pagina"
+    }
+
     private fun initReciclerView() {
         adapter = PokemonAdapter(pokemones)
         binding.rvPokemones.layoutManager = LinearLayoutManager(this)
         binding.rvPokemones.adapter = adapter
+
     }
 
     private fun quertyPokemon(query:String="https://pokeapi.co/api/v2/pokemon/") {
@@ -69,10 +75,8 @@ class PokemonMainActivity : AppCompatActivity() {
                     nextPage = info?.next ?: ""
                     previousPage = info?.previous ?: ""
                     adapter.notifyDataSetChanged()
-                }
-
-                Toast.makeText(this@PokemonMainActivity, "Ha ocurrido un error", Toast.LENGTH_SHORT)
-                    .show()
+                }else {
+                    Toast.makeText(this@PokemonMainActivity, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()}
 
             }
         }
@@ -84,4 +88,6 @@ class PokemonMainActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+
 }
