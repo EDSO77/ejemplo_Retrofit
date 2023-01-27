@@ -11,6 +11,7 @@ class PokemonAdapter(val pokemones: List<Pokemon>): RecyclerView.Adapter<Pokemon
         return PokemonViewHolder(layoutInflater.inflate(R.layout.item_pokemon,parent,false))
     }
 
+
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
         val item=pokemones[position]
         holder.render(item)
