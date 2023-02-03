@@ -8,6 +8,8 @@ import com.squareup.picasso.Picasso
 class PokemonViewHolder(view: View): RecyclerView.ViewHolder(view){
    private val binding = ItemPokemonBinding.bind(view)
     fun render(pokemon: Pokemon){
+
+        // IMPORTANTE: Usare esta notacion "***" en las notas echas posterior a la primera version
         //*** El view holder sera igual o similar, pero lo que en un principio pense que era
         //***la "url" de la imagen, devuelve toda la informacion del pokemon incluida una imagen dentro
 
